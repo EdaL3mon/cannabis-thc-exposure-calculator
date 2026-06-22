@@ -93,7 +93,7 @@ def show_disclaimer():
 
     st.markdown(
         """
-        <div style="background-color:#F8FAFC; padding:16px; border-radius:8px; border-left:6px solid #1E3A8A;">
+       <div style="background-color:#DBEAFE; padding:16px; border-radius:8px; border-left:6px solid #1E3A8A;">
 
         <p><u><strong>Scientific and clinical disclaimer</strong></u></p>
 
