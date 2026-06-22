@@ -186,13 +186,13 @@ with st.form("product_form"):
         inputs["thc_mg_per_ml"] = st.number_input(
             "THC concentration, mg/mL",
             min_value=0.0,
-            value=20.0,
+            value=None,
             step=0.1
         )
         inputs["ml_per_dose"] = st.number_input(
             "mL per dose",
             min_value=0.0,
-            value=0.5,
+            value=None,
             step=0.1
         )
 
@@ -200,13 +200,13 @@ with st.form("product_form"):
         inputs["thc_mg_per_unit"] = st.number_input(
             "THC mg per capsule/tablet",
             min_value=0.0,
-            value=5.0,
+            value=None,
             step=0.1
         )
         inputs["units_per_dose"] = st.number_input(
             "Capsules/tablets per dose",
             min_value=0.0,
-            value=1.0,
+            value=None,
             step=1.0
         )
 
@@ -215,13 +215,13 @@ with st.form("product_form"):
             "THC percentage of flower",
             min_value=0.0,
             max_value=100.0,
-            value=20.0,
+            value=None,
             step=0.1
         )
         inputs["grams_per_dose"] = st.number_input(
             "Grams per dose",
             min_value=0.0,
-            value=0.1,
+            value=None,
             step=0.01
         )
 
@@ -229,13 +229,13 @@ with st.form("product_form"):
         inputs["thc_mg_per_ml"] = st.number_input(
             "THC concentration, mg/mL",
             min_value=0.0,
-            value=20.0,
+            value=None,
             step=0.1
         )
         inputs["ml_per_dose"] = st.number_input(
             "mL per dose",
             min_value=0.0,
-            value=0.5,
+            value=None,
             step=0.1
         )
 
@@ -243,13 +243,13 @@ with st.form("product_form"):
         inputs["thc_mg_per_spray"] = st.number_input(
             "THC mg per spray",
             min_value=0.0,
-            value=2.7,
+            value=None,
             step=0.1
         )
         inputs["sprays_per_dose"] = st.number_input(
             "Sprays per dose",
             min_value=0.0,
-            value=1.0,
+            value=None,
             step=1.0
         )
 
