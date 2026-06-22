@@ -161,127 +161,127 @@ st.markdown(
 
 st.header("Add cannabis product")
 
-with st.form("product_form"):
-    product_name = st.text_input(
-        "Product name or description",
-        value=""
-    )
+route = st.selectbox(
+    "Product route",
+    [
+        "Oral oil",
+        "Capsule/tablet",
+        "Dried flower",
+        "Vape",
+        "Oromucosal spray",
+    ],
+    index=None,
+    placeholder="Select the route"
+)
 
-    route = st.selectbox(
-        "Product route",
-        [
-            "Oral oil",
-            "Capsule/tablet",
-            "Dried flower",
-            "Vape",
-            "Oromucosal spray",
-        ],
-        index=None,
-        placeholder="Select the route"
-    )
+if route is None:
+    st.info("Select a product route to show the route-specific input fields.")
 
-    st.subheader("Product concentration / amount per dose")
+else:
+    with st.form("product_form"):
+        product_name = st.text_input(
+            "Product name or description",
+            value=""
+        )
 
-    inputs = {}
+        st.subheader("Product concentration / amount per dose")
 
-    if route == "Oral oil":
-        inputs["thc_mg_per_ml"] = st.number_input(
-            "THC concentration, mg/mL",
+        inputs = {}
+
+        if route == "Oral oil":
+            inputs["thc_mg_per_ml"] = st.number_input(
+                "THC concentration, mg/mL",
+                min_value=0.0,
+                value=0.0,
+                step=0.1
+            )
+
+            inputs["ml_per_dose"] = st.number_input(
+                "mL per dose",
+                min_value=0.0,
+                value=0.0,
+                step=0.1
+            )
+
+        elif route == "Capsule/tablet":
+            inputs["thc_mg_per_unit"] = st.number_input(
+                "THC mg per capsule/tablet",
+                min_value=0.0,
+                value=0.0,
+                step=0.1
+            )
+
+            inputs["units_per_dose"] = st.number_input(
+                "Capsules/tablets per dose",
+                min_value=0.0,
+                value=0.0,
+                step=1.0
+            )
+
+        elif route == "Dried flower":
+            inputs["thc_percent"] = st.number_input(
+                "THC percentage of flower",
+                min_value=0.0,
+                max_value=100.0,
+                value=0.0,
+                step=0.1
+            )
+
+            inputs["grams_per_dose"] = st.number_input(
+                "Grams per dose",
+                min_value=0.0,
+                value=0.0,
+                step=0.01
+            )
+
+        elif route == "Vape":
+            inputs["thc_mg_per_ml"] = st.number_input(
+                "THC concentration, mg/mL",
+                min_value=0.0,
+                value=0.0,
+                step=0.1
+            )
+
+            inputs["ml_per_dose"] = st.number_input(
+                "mL per dose",
+                min_value=0.0,
+                value=0.0,
+                step=0.1
+            )
+
+        elif route == "Oromucosal spray":
+            inputs["thc_mg_per_spray"] = st.number_input(
+                "THC mg per spray",
+                min_value=0.0,
+                value=0.0,
+                step=0.1
+            )
+
+            inputs["sprays_per_dose"] = st.number_input(
+                "Sprays per dose",
+                min_value=0.0,
+                value=0.0,
+                step=1.0
+            )
+
+        st.subheader("Frequency")
+
+        regular_doses_per_day = st.number_input(
+            "Regular doses per day. If none, enter 0.",
             min_value=0.0,
             value=0.0,
             step=0.1
         )
 
-        inputs["ml_per_dose"] = st.number_input(
-            "mL per dose",
+        prn_doses_per_week = st.number_input(
+            "PRN doses per week. If none, enter 0.",
             min_value=0.0,
             value=0.0,
             step=0.1
         )
 
-    elif route == "Capsule/tablet":
-        inputs["thc_mg_per_unit"] = st.number_input(
-            "THC mg per capsule/tablet",
-            min_value=0.0,
-            value=0.0,
-            step=0.1
-        )
+        st.subheader("Bioavailability")
 
-        inputs["units_per_dose"] = st.number_input(
-            "Capsules/tablets per dose",
-            min_value=0.0,
-            value=0.0,
-            step=1.0
-        )
-
-    elif route == "Dried flower":
-        inputs["thc_percent"] = st.number_input(
-            "THC percentage of flower",
-            min_value=0.0,
-            max_value=100.0,
-            value=0.0,
-            step=0.1
-        )
-
-        inputs["grams_per_dose"] = st.number_input(
-            "Grams per dose",
-            min_value=0.0,
-            value=0.0,
-            step=0.01
-        )
-
-    elif route == "Vape":
-        inputs["thc_mg_per_ml"] = st.number_input(
-            "THC concentration, mg/mL",
-            min_value=0.0,
-            value=0.0,
-            step=0.1
-        )
-
-        inputs["ml_per_dose"] = st.number_input(
-            "mL per dose",
-            min_value=0.0,
-            value=0.0,
-            step=0.1
-        )
-
-    elif route == "Oromucosal spray":
-        inputs["thc_mg_per_spray"] = st.number_input(
-            "THC mg per spray",
-            min_value=0.0,
-            value=0.0,
-            step=0.1
-        )
-
-        inputs["sprays_per_dose"] = st.number_input(
-            "Sprays per dose",
-            min_value=0.0,
-            value=0.0,
-            step=1.0
-        )
-
-    else:
-        st.info("Select a product route to show route-specific input fields.")
-
-    st.subheader("Frequency")
-
-    regular_doses_per_day = st.number_input(
-        "Regular doses per day. If none, enter 0.",
-        min_value=0.0,
-        value=0.0,
-        step=0.1
-    )
-
-    prn_doses_per_week = st.number_input(
-        "PRN doses per week. If none, enter 0.",
-        min_value=0.0,
-        value=0.0,
-        step=0.1
-    )
-
-    st.subheader("Bioavailability")
-
-    if route is not None:
         default_bioavailability = DEFAULT_BIOAVAILABILITY[route]
 
         use_custom_bioavailability = st.checkbox(
@@ -300,38 +300,28 @@ with st.form("product_form"):
         else:
             bioavailability_factor = default_bioavailability
 
-    else:
-        default_bioavailability = None
-        bioavailability_factor = None
-        use_custom_bioavailability = False
-        st.info("Select a product route to show the default bioavailability factor.")
+        submitted = st.form_submit_button("Add product")
 
-    submitted = st.form_submit_button("Add product")
+        if submitted:
+            if product_name.strip() == "":
+                product_name = f"Product {len(st.session_state.products) + 1}"
 
-    if submitted:
-        if route is None:
-            st.error("Please select the product route before adding the product.")
-            st.stop()
+            thc_mg_per_dose, formula = calculate_thc_mg_per_dose(route, inputs)
 
-        if product_name.strip() == "":
-            product_name = f"Product {len(st.session_state.products) + 1}"
+            product_result = calculate_product_result(
+                product_name=product_name,
+                route=route,
+                formula=formula,
+                thc_mg_per_dose=thc_mg_per_dose,
+                regular_doses_per_day=regular_doses_per_day,
+                prn_doses_per_week=prn_doses_per_week,
+                default_bioavailability=default_bioavailability,
+                bioavailability_factor=bioavailability_factor,
+                custom_bioavailability_used=use_custom_bioavailability
+            )
 
-        thc_mg_per_dose, formula = calculate_thc_mg_per_dose(route, inputs)
-
-        product_result = calculate_product_result(
-            product_name=product_name,
-            route=route,
-            formula=formula,
-            thc_mg_per_dose=thc_mg_per_dose,
-            regular_doses_per_day=regular_doses_per_day,
-            prn_doses_per_week=prn_doses_per_week,
-            default_bioavailability=default_bioavailability,
-            bioavailability_factor=bioavailability_factor,
-            custom_bioavailability_used=use_custom_bioavailability
-        )
-
-        st.session_state.products.append(product_result)
-        st.success("Product added.")
+            st.session_state.products.append(product_result)
+            st.success("Product added.")
 
 
 st.header("Current products")
