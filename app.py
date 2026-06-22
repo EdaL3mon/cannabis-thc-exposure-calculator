@@ -175,7 +175,9 @@ with st.form("product_form"):
             "Dried flower",
             "Vape",
             "Oromucosal spray",
-        ]
+        ],
+        index=None,
+        placeholder="Select the route"
     )
 
     st.subheader("Product concentration / amount per dose")
