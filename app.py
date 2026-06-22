@@ -188,13 +188,14 @@ with st.form("product_form"):
         inputs["thc_mg_per_ml"] = st.number_input(
             "THC concentration, mg/mL",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
+
         inputs["ml_per_dose"] = st.number_input(
             "mL per dose",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
 
@@ -202,13 +203,14 @@ with st.form("product_form"):
         inputs["thc_mg_per_unit"] = st.number_input(
             "THC mg per capsule/tablet",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
+
         inputs["units_per_dose"] = st.number_input(
             "Capsules/tablets per dose",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=1.0
         )
 
@@ -217,13 +219,14 @@ with st.form("product_form"):
             "THC percentage of flower",
             min_value=0.0,
             max_value=100.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
+
         inputs["grams_per_dose"] = st.number_input(
             "Grams per dose",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.01
         )
 
@@ -231,13 +234,14 @@ with st.form("product_form"):
         inputs["thc_mg_per_ml"] = st.number_input(
             "THC concentration, mg/mL",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
+
         inputs["ml_per_dose"] = st.number_input(
             "mL per dose",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
 
@@ -245,15 +249,19 @@ with st.form("product_form"):
         inputs["thc_mg_per_spray"] = st.number_input(
             "THC mg per spray",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=0.1
         )
+
         inputs["sprays_per_dose"] = st.number_input(
             "Sprays per dose",
             min_value=0.0,
-            value=None,
+            value=0.0,
             step=1.0
         )
+
+    else:
+        st.info("Select a product route to show route-specific input fields.")
 
     st.subheader("Frequency")
 
@@ -273,27 +281,38 @@ with st.form("product_form"):
 
     st.subheader("Bioavailability")
 
-    default_bioavailability = DEFAULT_BIOAVAILABILITY[route]
+    if route is not None:
+        default_bioavailability = DEFAULT_BIOAVAILABILITY[route]
 
-    use_custom_bioavailability = st.checkbox(
-        f"Use custom bioavailability factor? Default for {route} is {default_bioavailability}."
-    )
-
-    if use_custom_bioavailability:
-        bioavailability_factor = st.number_input(
-            "Custom bioavailability factor",
-            min_value=0.0,
-            max_value=1.0,
-            value=default_bioavailability,
-            step=0.01,
-            help="Enter as a decimal. For example, 0.10 means 10%."
+        use_custom_bioavailability = st.checkbox(
+            f"Use custom bioavailability factor? Default for {route} is {default_bioavailability}."
         )
+
+        if use_custom_bioavailability:
+            bioavailability_factor = st.number_input(
+                "Custom bioavailability factor",
+                min_value=0.0,
+                max_value=1.0,
+                value=default_bioavailability,
+                step=0.01,
+                help="Enter as a decimal. For example, 0.10 means 10%."
+            )
+        else:
+            bioavailability_factor = default_bioavailability
+
     else:
-        bioavailability_factor = default_bioavailability
+        default_bioavailability = None
+        bioavailability_factor = None
+        use_custom_bioavailability = False
+        st.info("Select a product route to show the default bioavailability factor.")
 
     submitted = st.form_submit_button("Add product")
 
     if submitted:
+        if route is None:
+            st.error("Please select the product route before adding the product.")
+            st.stop()
+
         if product_name.strip() == "":
             product_name = f"Product {len(st.session_state.products) + 1}"
 
@@ -319,6 +338,7 @@ st.header("Current products")
 
 if len(st.session_state.products) == 0:
     st.info("No products added yet.")
+
 else:
     df = pd.DataFrame(st.session_state.products)
 
@@ -351,8 +371,8 @@ st.header("Default bioavailability assumptions")
 
 bioavailability_df = pd.DataFrame(
     [
-        {"Route": route, "Default bioavailability factor": factor}
-        for route, factor in DEFAULT_BIOAVAILABILITY.items()
+        {"Route": route_name, "Default bioavailability factor": factor}
+        for route_name, factor in DEFAULT_BIOAVAILABILITY.items()
     ]
 )
 
