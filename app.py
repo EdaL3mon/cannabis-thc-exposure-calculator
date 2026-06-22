@@ -91,35 +91,57 @@ def show_disclaimer():
     Displays the scientific, clinical, and AI-assisted code development disclaimer.
     """
 
-   st.markdown(
-    """
-    <div style="background-color:#fff3cd; padding:16px; border-radius:8px; border-left:6px solid #ffcc00;">
+    st.markdown(
+        """
+        <div style="background-color:#fff3cd; padding:16px; border-radius:8px; border-left:6px solid #ffcc00;">
 
-    <p><u><strong>Scientific and clinical disclaimer</strong></u></p>
+        <p><u><strong>Scientific and clinical disclaimer</strong></u></p>
 
-    <p><em>This calculator estimates nominal THC exposure in mg/day and route-specific
-    bioavailability-adjusted THC exposure in mg/day.</em></p>
+        <p><em>This calculator estimates nominal THC exposure in mg/day and route-specific
+        bioavailability-adjusted THC exposure in mg/day.</em></p>
 
-    <p><em>It is intended for research, audit, and documentation standardisation only.
-    It is not intended to guide cannabis initiation, prescribing, dose adjustment,
-    perioperative clearance, anaesthetic dosing, or individual clinical decision-making.</em></p>
+        <p><em>It is intended for research, audit, and documentation standardisation only.
+        It is not intended to guide cannabis initiation, prescribing, dose adjustment,
+        perioperative clearance, anaesthetic dosing, or individual clinical decision-making.</em></p>
 
-    <p><u><strong>Scientific context</strong></u></p>
+        <p><em>The calculated values do not estimate plasma THC concentration, acute intoxication,
+        impairment, withdrawal risk, anaesthetic requirement, postoperative risk, or
+        individual patient-level clinical effect.</em></p>
 
-    <p><em>Medicinal cannabis product availability and prescribing pathways vary across
-    products and jurisdictions, complicating standardised exposure documentation
-    (Therapeutic Goods Administration, 2026; AIHW, 2024).</em></p>
+        <p><em>Bioavailability-adjusted exposure is an approximation. THC pharmacokinetics vary
+        substantially by route, formulation, product composition, inhalation technique,
+        oral absorption, first-pass metabolism, timing of last use, and inter-individual
+        metabolic variability.</em></p>
 
-    <p><u><strong>AI-assisted code development statement</strong></u></p>
+        <p><em>Default bioavailability assumptions should be treated as modifiable research
+        parameters, not fixed biological constants.</em></p>
 
-    <p><em>This calculator was developed with assistance from ChatGPT. The authors reviewed,
-    edited, and tested the code and remain responsible for the calculator logic,
-    implementation, assumptions, outputs, and interpretation.</em></p>
+        <p><u><strong>Scientific context</strong></u></p>
 
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        <p><em>Medicinal cannabis product availability and prescribing pathways vary across
+        products and jurisdictions, complicating standardised exposure documentation
+        (Therapeutic Goods Administration, 2026; AIHW, 2024).</em></p>
+
+        <p><em>Cannabis exposure has been associated with perioperative and anaesthetic
+        considerations including sedative/anaesthetic requirements, postoperative nausea
+        and vomiting, postoperative pain, opioid use, and cardiovascular risk signals in
+        observational studies (Imasogie et al., 2021; Suhre et al., 2020; Liu et al., 2019;
+        Goel et al., 2020; Ekrami et al., 2024; Baker et al., 2025).</em></p>
+
+        <p><em>Route-specific THC bioavailability estimates are variable and should be interpreted
+        cautiously (Hazekamp et al.; Hädener et al.; Huestis et al.).</em></p>
+
+        <p><u><strong>AI-assisted code development statement</strong></u></p>
+
+        <p><em>This calculator was developed with assistance from ChatGPT. The authors reviewed,
+        edited, and tested the code and remain responsible for the calculator logic,
+        implementation, assumptions, outputs, and interpretation. The tool should be used
+        only in accordance with the stated research and documentation purposes.</em></p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 if "products" not in st.session_state:
