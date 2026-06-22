@@ -142,6 +142,12 @@ def show_disclaimer():
 if "products" not in st.session_state:
     st.session_state.products = []
 
+if "form_counter" not in st.session_state:
+    st.session_state.form_counter = 1
+
+if "product_added_message" not in st.session_state:
+    st.session_state.product_added_message = False
+
 
 st.title("Cannabis THC Exposure Calculator")
 
@@ -154,12 +160,19 @@ st.markdown(
     1. **Nominal THC exposure**, expressed as mg/day  
     2. **Bioavailability-adjusted THC exposure**, expressed as estimated mg/day  
 
-    Add one product at a time. The app will keep a running table and total.
+    Add one product at a time. After each product is added, a fresh product form will appear.
     """
 )
 
 
+if st.session_state.product_added_message:
+    st.success("Product added. A new blank product form has been started.")
+    st.session_state.product_added_message = False
+
+
 st.header("Add cannabis product")
+
+current_form_id = st.session_state.form_counter
 
 route = st.selectbox(
     "Product route",
@@ -171,17 +184,19 @@ route = st.selectbox(
         "Oromucosal spray",
     ],
     index=None,
-    placeholder="Select the route"
+    placeholder="Select the route",
+    key=f"route_{current_form_id}"
 )
 
 if route is None:
     st.info("Select a product route to show the route-specific input fields.")
 
 else:
-    with st.form("product_form"):
+    with st.form(key=f"product_form_{current_form_id}"):
         product_name = st.text_input(
             "Product name or description",
-            value=""
+            value="",
+            key=f"product_name_{current_form_id}"
         )
 
         st.subheader("Product concentration / amount per dose")
@@ -193,14 +208,16 @@ else:
                 "THC concentration, mg/mL",
                 min_value=0.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"oil_thc_mg_per_ml_{current_form_id}"
             )
 
             inputs["ml_per_dose"] = st.number_input(
                 "mL per dose",
                 min_value=0.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"oil_ml_per_dose_{current_form_id}"
             )
 
         elif route == "Capsule/tablet":
@@ -208,14 +225,16 @@ else:
                 "THC mg per capsule/tablet",
                 min_value=0.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"capsule_thc_mg_per_unit_{current_form_id}"
             )
 
             inputs["units_per_dose"] = st.number_input(
                 "Capsules/tablets per dose",
                 min_value=0.0,
                 value=0.0,
-                step=1.0
+                step=1.0,
+                key=f"capsule_units_per_dose_{current_form_id}"
             )
 
         elif route == "Dried flower":
@@ -224,14 +243,16 @@ else:
                 min_value=0.0,
                 max_value=100.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"flower_thc_percent_{current_form_id}"
             )
 
             inputs["grams_per_dose"] = st.number_input(
                 "Grams per dose",
                 min_value=0.0,
                 value=0.0,
-                step=0.01
+                step=0.01,
+                key=f"flower_grams_per_dose_{current_form_id}"
             )
 
         elif route == "Vape":
@@ -239,14 +260,16 @@ else:
                 "THC concentration, mg/mL",
                 min_value=0.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"vape_thc_mg_per_ml_{current_form_id}"
             )
 
             inputs["ml_per_dose"] = st.number_input(
                 "mL per dose",
                 min_value=0.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"vape_ml_per_dose_{current_form_id}"
             )
 
         elif route == "Oromucosal spray":
@@ -254,14 +277,16 @@ else:
                 "THC mg per spray",
                 min_value=0.0,
                 value=0.0,
-                step=0.1
+                step=0.1,
+                key=f"spray_thc_mg_per_spray_{current_form_id}"
             )
 
             inputs["sprays_per_dose"] = st.number_input(
                 "Sprays per dose",
                 min_value=0.0,
                 value=0.0,
-                step=1.0
+                step=1.0,
+                key=f"spray_sprays_per_dose_{current_form_id}"
             )
 
         st.subheader("Frequency")
@@ -270,14 +295,16 @@ else:
             "Regular doses per day. If none, enter 0.",
             min_value=0.0,
             value=0.0,
-            step=0.1
+            step=0.1,
+            key=f"regular_doses_per_day_{current_form_id}"
         )
 
         prn_doses_per_week = st.number_input(
             "PRN doses per week. If none, enter 0.",
             min_value=0.0,
             value=0.0,
-            step=0.1
+            step=0.1,
+            key=f"prn_doses_per_week_{current_form_id}"
         )
 
         st.subheader("Bioavailability")
@@ -285,7 +312,8 @@ else:
         default_bioavailability = DEFAULT_BIOAVAILABILITY[route]
 
         use_custom_bioavailability = st.checkbox(
-            f"Use custom bioavailability factor? Default for {route} is {default_bioavailability}."
+            f"Use custom bioavailability factor? Default for {route} is {default_bioavailability}.",
+            key=f"use_custom_bioavailability_{current_form_id}"
         )
 
         if use_custom_bioavailability:
@@ -295,7 +323,8 @@ else:
                 max_value=1.0,
                 value=default_bioavailability,
                 step=0.01,
-                help="Enter as a decimal. For example, 0.10 means 10%."
+                help="Enter as a decimal. For example, 0.10 means 10%.",
+                key=f"custom_bioavailability_{current_form_id}"
             )
         else:
             bioavailability_factor = default_bioavailability
@@ -307,6 +336,14 @@ else:
                 product_name = f"Product {len(st.session_state.products) + 1}"
 
             thc_mg_per_dose, formula = calculate_thc_mg_per_dose(route, inputs)
+
+            if thc_mg_per_dose <= 0:
+                st.error("Please enter product concentration and dose values greater than 0.")
+                st.stop()
+
+            if regular_doses_per_day == 0 and prn_doses_per_week == 0:
+                st.error("Please enter at least one regular dose per day or PRN dose per week.")
+                st.stop()
 
             product_result = calculate_product_result(
                 product_name=product_name,
@@ -321,7 +358,10 @@ else:
             )
 
             st.session_state.products.append(product_result)
-            st.success("Product added.")
+
+            st.session_state.form_counter += 1
+            st.session_state.product_added_message = True
+            st.rerun()
 
 
 st.header("Current products")
@@ -354,6 +394,7 @@ else:
 
     if st.button("Clear all products"):
         st.session_state.products = []
+        st.session_state.form_counter += 1
         st.rerun()
 
 
